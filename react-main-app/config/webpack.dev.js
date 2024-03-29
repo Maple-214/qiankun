@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const { GenerateSW } = require('workbox-webpack-plugin');
 const commonConfig = require('./webpack.common');
@@ -16,7 +17,10 @@ module.exports = merge(commonConfig, {
         //     cleanupOutdatedCaches: true, // 尝试删除老版本缓存
         //     maximumFileSizeToCacheInBytes: 1024000 * 4, // 只缓存 4M 以下的文件
         //     include: [/.*.(png|jpg|jpeg|svg|ico|webp)$/, /.*.(js|css)$/], // 只缓存图片、js、css
-        // })
+        // }),
+        new webpack.DefinePlugin({
+            'process.env.APP_ENV': JSON.stringify(ENV)
+        })
     ],
     devServer: {
         static: {

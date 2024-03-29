@@ -3,12 +3,14 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const webpack = require('webpack');
 
 const { merge } = require('webpack-merge');
 const commonConfig = require('./webpack.common.js');
+const ENV = 'production'
 
 module.exports = merge(commonConfig, {
-  mode: 'production',
+  mode: ENV,
   optimization: {
     splitChunks: {
       chunks: 'all',
@@ -71,6 +73,9 @@ module.exports = merge(commonConfig, {
       // both options are optional
       filename: 'static/css/[name].[contenthash:8].css',
       chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
+    }),
+    new webpack.DefinePlugin({
+      'process.env.APP_ENV': JSON.stringify(ENV)
     })
   ]
   // 其他生产环境配置...

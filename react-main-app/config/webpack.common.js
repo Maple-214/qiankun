@@ -109,81 +109,86 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|ts|jsx|tsx)$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript'],
-          },
-        },
-      },
-      {
-        test: cssRegex,
-        exclude: cssModuleRegex,
-        use: getStyleLoaders({
-          importLoaders: 1,
-          // sourceMap: isEnvProduction
-          //   ? shouldUseSourceMap
-          //   : isEnvDevelopment,
-          sourceMap: isEnvDevelopment ? true : false,
-          modules: {
-            mode: 'icss',
-          },
-        }),
-        sideEffects: true,
-      },
-      {
-        test: cssModuleRegex,
-        use: getStyleLoaders({
-          importLoaders: 1,
-          // sourceMap: isEnvProduction
-          //   ? shouldUseSourceMap
-          //   : isEnvDevelopment,
-          sourceMap: isEnvDevelopment ? true : false,
-          modules: {
-            mode: 'local',
-            // getLocalIdent: getCSSModuleLocalIdent,
-            localIdentName: '[name]__[local]--[hash:base64:5]',
-          },
-        }),
-      },
-      {
-        test: sassRegex,
-        exclude: sassModuleRegex,
-        use: getStyleLoaders(
+        oneOf: [
           {
-            importLoaders: 3,
-            // sourceMap: isEnvProduction
-            //   ? shouldUseSourceMap
-            //   : isEnvDevelopment,
-            sourceMap: isEnvDevelopment ? true : false,
-            modules: {
-              mode: 'icss',
+            test: /\.(js|ts|jsx|tsx)$/,
+            exclude: /node_modules/,
+            use: {
+              loader: 'babel-loader',
+              options: {
+                presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript'],
+              },
             },
           },
-          'sass-loader'
-        ),
-        sideEffects: true,
-      },
-      {
-        test: sassModuleRegex,
-        use: getStyleLoaders(
           {
-            importLoaders: 3,
-            // sourceMap: isEnvProduction
-            //   ? shouldUseSourceMap
-            //   : isEnvDevelopment,
-            sourceMap: isEnvDevelopment ? true : false,
-            modules: {
-              mode: 'local',
-              // getLocalIdent: getCSSModuleLocalIdent,
-              localIdentName: '[local]--[hash:base64:5]',
-            },
+            test: cssRegex,
+            exclude: cssModuleRegex,
+            use: getStyleLoaders({
+              importLoaders: 1,
+              // sourceMap: isEnvProduction
+              //   ? shouldUseSourceMap
+              //   : isEnvDevelopment,
+              sourceMap: isEnvDevelopment ? true : false,
+              modules: {
+                mode: 'icss',
+              },
+            }),
+            sideEffects: true,
           },
-          'sass-loader'
-        ),
-      },
-    ].filter(Boolean)
+          {
+            test: cssModuleRegex,
+            use: getStyleLoaders({
+              importLoaders: 1,
+              // sourceMap: isEnvProduction
+              //   ? shouldUseSourceMap
+              //   : isEnvDevelopment,
+              sourceMap: isEnvDevelopment ? true : false,
+              modules: {
+                mode: 'local',
+                // getLocalIdent: getCSSModuleLocalIdent,
+                localIdentName: '[name]__[local]--[hash:base64:5]',
+              },
+            }),
+          },
+          {
+            test: sassRegex,
+            exclude: sassModuleRegex,
+            use: getStyleLoaders(
+              {
+                importLoaders: 3,
+                // sourceMap: isEnvProduction
+                //   ? shouldUseSourceMap
+                //   : isEnvDevelopment,
+                sourceMap: isEnvDevelopment ? true : false,
+                modules: {
+                  mode: 'icss',
+                },
+              },
+              'sass-loader'
+            ),
+            sideEffects: true,
+          },
+          {
+            test: sassModuleRegex,
+            use: getStyleLoaders(
+              {
+                importLoaders: 3,
+                // sourceMap: isEnvProduction
+                //   ? shouldUseSourceMap
+                //   : isEnvDevelopment,
+                sourceMap: isEnvDevelopment ? true : false,
+                modules: {
+                  mode: 'local',
+                  // getLocalIdent: getCSSModuleLocalIdent,
+                  localIdentName: '[local]--[hash:base64:5]',
+                },
+              },
+              'sass-loader'
+            ),
+          },
+        ].filter(Boolean)
+      }
+
+    ]
   }
 }
